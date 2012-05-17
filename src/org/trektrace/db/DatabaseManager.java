@@ -4,10 +4,7 @@ import org.trektrace.Configuration;
 
 import net.rim.device.api.database.Database;
 import net.rim.device.api.database.DatabaseFactory;
-import net.rim.device.api.database.DatabaseIOException;
-import net.rim.device.api.database.DatabasePathException;
 import net.rim.device.api.database.Statement;
-import net.rim.device.api.io.MalformedURIException;
 import net.rim.device.api.io.URI;
 
 public class DatabaseManager {
@@ -84,7 +81,7 @@ public class DatabaseManager {
 					", description TEXT" +
 					")");
 			
-			Statement settingsStmt = db.createStatement("CREATE TABE IF NOT EXISTS settings " +
+			Statement settingsStmt = db.createStatement("CREATE TABLE IF NOT EXISTS settings " +
 					"(" +
 					"key TEXT NOT NULL" +
 					", value TEXT" +
