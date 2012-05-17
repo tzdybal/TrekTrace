@@ -3,11 +3,18 @@ package org.trektrace.entities;
 import java.util.Date;
 
 public class Point extends Entity {
+	private Long routeId;
 	private double altitude;
 	private double latitude;
 	private double longitude;
 	private Date date;
 	
+	public Long getRouteId() {
+		return routeId;
+	}
+	public void setRouteId(Long routeId) {
+		this.routeId = routeId;
+	}
 	public double getAltitude() {
 		return altitude;
 	}

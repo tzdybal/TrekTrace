@@ -20,12 +20,10 @@ public final class TreckTraceScreen extends MainScreen {
 	 */
 	public TreckTraceScreen() {
 		// Set the displayed title of the screen
-		setTitle("TrekTrace - dbtest3");
+		setTitle("TrekTrace - dbtest");
 		
 		FieldChangeListener listener = new FieldChangeListener() {
 			public void fieldChanged(Field field, int context) {
-				Dialog.inform("starting database...");
-				
 				try {
 					initDatabase();
 				} catch (DatabaseException e) {
