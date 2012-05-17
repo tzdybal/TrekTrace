@@ -1,8 +1,6 @@
 package org.trektrace.dao;
 
 import org.trektrace.db.DatabaseException;
-import org.trektrace.db.DatabaseManager;
-
 import net.rim.device.api.database.Database;
 
 public abstract class BaseDao {
@@ -12,7 +10,7 @@ public abstract class BaseDao {
 		db = database;
 	}
 
-	public Database getDatabase() {
+	public static Database getDatabase() {
 		return db;
 	}
 

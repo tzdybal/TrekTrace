@@ -6,4 +6,8 @@ public class DatabaseException extends Exception {
 		super(e.getMessage());
 	}
 
+	public DatabaseException(String message) {
+		super(message);
+	}
+
 }

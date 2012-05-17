@@ -1,8 +1,13 @@
 package org.trektrace;
 
+import java.util.Date;
+
 import org.trektrace.dao.BaseDao;
+import org.trektrace.dao.RouteDao;
 import org.trektrace.db.DatabaseException;
 import org.trektrace.db.DatabaseManager;
+import org.trektrace.entities.Point;
+import org.trektrace.entities.Route;
 
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
@@ -43,7 +48,29 @@ public final class TreckTraceScreen extends MainScreen {
 			DatabaseManager.createDatabase();
 		}
 		BaseDao.setDatabase(DatabaseManager.getDatabase());
-		System.out.println("Database initialised! ("
-				+ DatabaseManager.getDatabase() + ")");
+		
+		if (BaseDao.getDatabase() == null) {
+			throw new DatabaseException("Database error!");
+		}
+
+		Route r = new Route();
+		r.setName("test route");
+		r.setDescription("some description");
+		long base = new Date().getTime();
+		for (int i = 0; i < 10; ++i) {
+			Point p = new Point();
+			p.setAltitude(1000 + 10*i);
+			p.setLatitude(10*i);
+			p.setLongitude(5*i);
+			p.setDate(new Date(base + 60*i));
+			
+			r.addPoint(p);
+		}
+		
+		RouteDao rd = new RouteDao();
+		rd.saveOrUpdate(r);
+		
+		Route fromDB = (Route) rd.read(r.getId());
+		Dialog.inform("points count: " + fromDB.getPoints().size());
 	}
 }

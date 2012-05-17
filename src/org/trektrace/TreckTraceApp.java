@@ -1,11 +1,6 @@
 package org.trektrace;
 
-import org.trektrace.dao.BaseDao;
-import org.trektrace.db.DatabaseException;
-import org.trektrace.db.DatabaseManager;
-
 import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.component.Dialog;
 
 /**
  * This class extends the UiApplication class, providing a graphical user
