@@ -18,7 +18,7 @@ public class TreckTraceApp extends UiApplication {
 		// running thread the application's event dispatch thread.
 		TreckTraceApp theApp = new TreckTraceApp();
 		theApp.enterEventDispatcher();
-
+		
 	}
 
 	/**
