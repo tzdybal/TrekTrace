@@ -102,7 +102,7 @@ public class RouteDao extends BaseDao {
 			Statement points = db
 					.createStatement("DELETE FROM points WHERE route_id = ?");
 			Statement route = db
-					.createStatement("DELETE FROM route WHERE id = ?");
+					.createStatement("DELETE FROM routes WHERE id = ?");
 			points.prepare();
 			route.prepare();
 
@@ -113,12 +113,34 @@ public class RouteDao extends BaseDao {
 			points.execute();
 			route.execute();
 			db.commitTransaction();
-			
+
 			points.close();
 			route.close();
 		} catch (Exception e) {
 			throw new DatabaseException(getClass().getName() + ".remove() "
 					+ e.getMessage());
+		}
+	}
+
+	public Vector getAllRoutes() throws DatabaseException {
+		try {
+			Statement routesStmt = db.createStatement("SELECT id FROM routes");
+			routesStmt.prepare();
+			
+			db.beginTransaction();
+			
+			Cursor c = routesStmt.getCursor();
+			
+			Vector routes = new Vector();
+			while (c.next()) {
+				routes.addElement(read(new Long(c.getRow().getLong(0))));
+			}
+			
+			db.commitTransaction();
+			
+			return routes;
+		} catch (Exception ex) {
+			throw new DatabaseException(ex);
 		}
 	}
 
