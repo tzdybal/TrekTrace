@@ -1,35 +1,17 @@
 package org.trektrace;
 
-import java.util.Date;
-
-import javax.microedition.location.Location;
-import javax.microedition.location.LocationException;
-import javax.microedition.location.LocationListener;
 import javax.microedition.location.LocationProvider;
-import javax.microedition.location.QualifiedCoordinates;
-
-import org.trektrace.dao.BaseDao;
-import org.trektrace.dao.RouteDao;
-import org.trektrace.db.DatabaseException;
-import org.trektrace.db.DatabaseManager;
-import org.trektrace.entities.Point;
-import org.trektrace.entities.Route;
-import org.trektrace.gps.GPSListener;
 
 import net.rim.device.api.gps.BlackBerryCriteria;
 import net.rim.device.api.gps.BlackBerryLocationProvider;
-import net.rim.device.api.ui.Field;
-import net.rim.device.api.ui.FieldChangeListener;
-import net.rim.device.api.ui.Graphics;
-import net.rim.device.api.ui.Screen;
-import net.rim.device.api.ui.ScreenUiEngineAttachedListener;
-import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.ListField;
-import net.rim.device.api.ui.component.ListFieldCallback;
-import net.rim.device.api.ui.component.table.RichList;
-import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
+
+import org.trektrace.dao.BaseDao;
+import org.trektrace.db.DatabaseException;
+import org.trektrace.db.DatabaseManager;
+import org.trektrace.gps.GPSListener;
 
 /**
  * A class extending the MainScreen class, which provides default standard
@@ -80,21 +62,13 @@ public final class TreckTraceScreen extends MainScreen {
 		 */
 	}
 
-	protected void onExposed() {
-		try {
+	public void init() throws Exception {
 			initDatabase();
 			initUI();
 
-			/*
-			 * BlackBerryCriteria criteria = new BlackBerryCriteria();
-			 * BlackBerryLocationProvider provider =
-			 * (BlackBerryLocationProvider) LocationProvider
-			 * .getInstance(criteria); provider.setLocationListener(new
-			 * GPSListener(), 10, -1, -1);
-			 */
-		} catch (Exception e) {
-			Dialog.alert(e.getMessage());
-		}
+			BlackBerryCriteria criteria = new BlackBerryCriteria();
+			BlackBerryLocationProvider provider = (BlackBerryLocationProvider) LocationProvider
+					.getInstance(criteria);
+			provider.setLocationListener(new GPSListener(), 10, -1, -1);
 	}
-
 }
