@@ -1,16 +1,20 @@
-package org.trektrace;
+package org.trektrace.ui;
 
 import javax.microedition.location.LocationProvider;
 
 import net.rim.device.api.gps.BlackBerryCriteria;
 import net.rim.device.api.gps.BlackBerryLocationProvider;
+import net.rim.device.api.ui.MenuItem;
+import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.ListField;
 import net.rim.device.api.ui.container.MainScreen;
 
+import org.trektrace.RouteListCallback;
 import org.trektrace.dao.BaseDao;
 import org.trektrace.db.DatabaseException;
 import org.trektrace.db.DatabaseManager;
+import org.trektrace.entities.Route;
 import org.trektrace.gps.GPSListener;
 
 /**
@@ -28,6 +32,28 @@ public final class TreckTraceScreen extends MainScreen {
 		setTitle("TrekTrace");
 		routeList = new ListField();
 		add(routeList);
+		MenuItem altitudeItem = new MenuItem("Alitude plot", 10, 1) {
+			public void run() {
+				Dialog.inform("altitude plot");
+			}
+		};
+		MenuItem mapItem = new MenuItem("Show on map", 10, 2) {
+			public void run() {
+				Dialog.inform("show on map");
+			}
+		};
+		MenuItem statItem = new MenuItem("Show statistics", 10, 3) {
+			public void run() {
+				Route selected = (Route) routeList.getCallback().get(routeList,
+						routeList.getSelectedIndex());
+				((UiApplication) getApplication())
+						.pushScreen(new RouteStatsScreen(selected));
+			}
+		};
+
+		addMenuItem(altitudeItem);
+		addMenuItem(mapItem);
+		addMenuItem(statItem);
 	}
 
 	private void initUI() throws DatabaseException {
@@ -63,12 +89,12 @@ public final class TreckTraceScreen extends MainScreen {
 	}
 
 	public void init() throws Exception {
-			initDatabase();
-			initUI();
+		initDatabase();
+		initUI();
 
-			BlackBerryCriteria criteria = new BlackBerryCriteria();
-			BlackBerryLocationProvider provider = (BlackBerryLocationProvider) LocationProvider
-					.getInstance(criteria);
-			provider.setLocationListener(new GPSListener(), 10, -1, -1);
+		BlackBerryCriteria criteria = new BlackBerryCriteria();
+		BlackBerryLocationProvider provider = (BlackBerryLocationProvider) LocationProvider
+				.getInstance(criteria);
+		provider.setLocationListener(new GPSListener(), 10, -1, -1);
 	}
 }

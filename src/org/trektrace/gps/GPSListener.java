@@ -33,7 +33,7 @@ public class GPSListener implements LocationListener {
 			p.setLatitude(coords.getLatitude());
 			p.setLongitude(coords.getLongitude());
 			p.setDate(new Date());
-
+			
 			route.addPoint(p);
 			try {
 				routeDao.saveOrUpdate(route);
