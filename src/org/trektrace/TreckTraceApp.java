@@ -1,5 +1,7 @@
 package org.trektrace;
 
+import org.trektrace.ui.TreckTraceScreen;
+
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
 
