@@ -34,7 +34,9 @@ public final class TreckTraceScreen extends MainScreen {
 		add(routeList);
 		MenuItem altitudeItem = new MenuItem("Alitude plot", 10, 1) {
 			public void run() {
-				Dialog.inform("altitude plot");
+				Route selected = getSelectedRoute();
+				((UiApplication) getApplication())
+						.pushScreen(new AltitudePlotScreen(selected));
 			}
 		};
 		MenuItem mapItem = new MenuItem("Show on map", 10, 2) {
@@ -44,8 +46,7 @@ public final class TreckTraceScreen extends MainScreen {
 		};
 		MenuItem statItem = new MenuItem("Show statistics", 10, 3) {
 			public void run() {
-				Route selected = (Route) routeList.getCallback().get(routeList,
-						routeList.getSelectedIndex());
+				Route selected = getSelectedRoute();
 				((UiApplication) getApplication())
 						.pushScreen(new RouteStatsScreen(selected));
 			}
@@ -96,5 +97,11 @@ public final class TreckTraceScreen extends MainScreen {
 		BlackBerryLocationProvider provider = (BlackBerryLocationProvider) LocationProvider
 				.getInstance(criteria);
 		provider.setLocationListener(new GPSListener(), 10, -1, -1);
+	}
+
+	private Route getSelectedRoute() {
+		Route selected = (Route) routeList.getCallback().get(routeList,
+				routeList.getSelectedIndex());
+		return selected;
 	}
 }
