@@ -10,6 +10,8 @@ import org.trektrace.entities.Route;
 import org.trektrace.entities.RouteStats;
 
 import net.rim.device.api.system.Display;
+import net.rim.device.api.ui.Font;
+import net.rim.device.api.ui.FontFamily;
 import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.container.MainScreen;
 
@@ -33,7 +35,8 @@ public class AltitudePlotScreen extends MainScreen {
 
 		int dw = Display.getWidth();
 		int dh1 = Display.getHeight();
-		int dh2 = dh1 - 30;
+		int topSpace = 30;
+		int dh2 = dh1 - topSpace;
 
 		int pw = (int) stats.getDistance();
 		int ph = (int) Math.floor(stats.getMaxAltitude()
@@ -90,8 +93,40 @@ public class AltitudePlotScreen extends MainScreen {
 		ptx[ptx.length - 1] = 0;
 		pty[ptx.length - 1] = dh1;
 
+		graphics.setDrawingStyle(Graphics.DRAWSTYLE_ANTIALIASED, true);
+		
 		graphics.setColor(0x0000FF00);
 		graphics.drawFilledPath(ptx, pty, null, null);
+		
+		graphics.setColor(0x00000000);
+		int fontSize = 14;
+		FontFamily fontFamily[] = FontFamily.getFontFamilies();
+		Font f = fontFamily[0].getFont(FontFamily.SCALABLE_FONT, fontSize);
+		graphics.setFont(f);
+		//graphics.drawText(stats.getMinAltitude()+"m", 1, dh1 - fontSize);
+		//graphics.drawText(stats.getMaxAltitude()+"m", 1, topSpace);
+		
+		int every = 25;
+		if (ph > 100) {
+			every = 50;
+		} else if (ph > 500) {
+			every = 100;
+		} else if (ph > 1000) {
+			every = 200;
+		} else if (ph > 2000) {
+			every = 500;
+		} else if ( ph > 4000) {
+			every = 1000;
+		}
+		
+		graphics.setStipple(0xF0F0F0F0);
+		for (int i = (int) (stats.getMinAltitude() / every); i < stats.getMaxAltitude() / every; ++i) {
+			int h = (int) (dh1 - (every*i - stats.getMinAltitude()) / ph * dh2);
+			int textWidth = graphics.drawText(every*i+"m", 1, h-fontSize/2);
+			graphics.setDrawingStyle(Graphics.DRAWSTYLE_ANTIALIASED, false);
+			graphics.drawLine(textWidth + 2, h, dw, h);
+			graphics.setDrawingStyle(Graphics.DRAWSTYLE_ANTIALIASED, true);
+		}
 	}
 
 }
