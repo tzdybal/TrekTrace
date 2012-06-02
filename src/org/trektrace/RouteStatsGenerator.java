@@ -22,7 +22,11 @@ public class RouteStatsGenerator {
 
 		Vector points = route.getPoints();
 
-		QualifiedCoordinates lastCoords = null;
+		QualifiedCoordinates lastCoords = new QualifiedCoordinates(0, 0, 0,
+				Float.NaN, Float.NaN);
+		QualifiedCoordinates coords = new QualifiedCoordinates(0, 0, 0,
+				Float.NaN, Float.NaN);
+
 		for (int i = 0; i < points.size(); ++i) {
 			Point p = (Point) points.elementAt(i);
 			double alt = p.getAltitude();
@@ -33,24 +37,29 @@ public class RouteStatsGenerator {
 				maxA = alt;
 			}
 
-			QualifiedCoordinates coords = new QualifiedCoordinates(
-					p.getLatitude(), p.getLongitude(), (float) p.getAltitude(),
-					Float.NaN, Float.NaN);
+			coords.setAltitude(p.getAltitude());
+			coords.setLongitude(p.getLongitude());
+			coords.setLatitude(p.getLatitude());
 
-			if (lastCoords != null) {
+			if (i > 0) {
 				double dist = coords.distance(lastCoords);
 				distance += dist;
 				if (alt > lastCoords.getAltitude()) {
 					asc += dist;
-				} else if (alt < lastCoords.getAltitude()) {
+				}
+				if (alt < lastCoords.getAltitude()) {
 					desc += dist;
 				}
 			}
-			lastCoords = coords;
+
+			lastCoords.setAltitude(coords.getAltitude());
+			lastCoords.setLongitude(coords.getLongitude());
+			lastCoords.setLatitude(coords.getLatitude());
 		}
-		
-		time = ((Point)points.lastElement()).getDate().getTime() - ((Point)points.firstElement()).getDate().getTime();
-		
+
+		time = ((Point) points.lastElement()).getDate().getTime()
+				- ((Point) points.firstElement()).getDate().getTime();
+
 		stats.setMaxAltitude(maxA);
 		stats.setMinAltitude(minA);
 		stats.setAvgAltitude(sumA / points.size());
@@ -59,7 +68,7 @@ public class RouteStatsGenerator {
 		stats.setDistance(distance);
 		stats.setTime(time);
 		// distance is in meters, time in miliseconds, speed in km/h
-		stats.setAvgSpeed((distance / 1000) / (time / 1000 /  3600));
+		stats.setAvgSpeed((distance / 1000) / (time / 1000 / 3600));
 
 		return stats;
 	}

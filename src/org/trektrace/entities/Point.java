@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Point extends Entity {
 	private Long routeId;
-	private double altitude;
+	private float altitude;
 	private double latitude;
 	private double longitude;
 	private Date date;
@@ -15,10 +15,10 @@ public class Point extends Entity {
 	public void setRouteId(Long routeId) {
 		this.routeId = routeId;
 	}
-	public double getAltitude() {
+	public float getAltitude() {
 		return altitude;
 	}
-	public void setAltitude(double altitude) {
+	public void setAltitude(float altitude) {
 		this.altitude = altitude;
 	}
 	public double getLatitude() {

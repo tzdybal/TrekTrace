@@ -20,12 +20,11 @@ public class GPSListener implements LocationListener {
 
 	public GPSListener() {
 		routeDao = new RouteDao();
-		route.setName("hard");
-		route.setDescription("hardcoded one!");
+		route.setName(new Date().toString());
+		route.setDescription("Hardcoded description");
 	}
 
 	public void locationUpdated(LocationProvider provider, Location location) {
-		// TODO Auto-generated method stub
 		if (location.isValid()) {
 			Point p = new Point();
 			QualifiedCoordinates coords = location.getQualifiedCoordinates();
@@ -33,9 +32,10 @@ public class GPSListener implements LocationListener {
 			p.setLatitude(coords.getLatitude());
 			p.setLongitude(coords.getLongitude());
 			p.setDate(new Date());
-			
+
 			route.addPoint(p);
 			try {
+				// TODO optimize this
 				routeDao.saveOrUpdate(route);
 			} catch (Exception e) {
 				Dialog.alert(e.getMessage());
