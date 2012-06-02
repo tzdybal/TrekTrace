@@ -13,15 +13,15 @@ import net.rim.device.api.system.Display;
 import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.FontFamily;
 import net.rim.device.api.ui.Graphics;
-import net.rim.device.api.ui.container.MainScreen;
+import net.rim.device.api.ui.Screen;
+import net.rim.device.api.ui.container.FullScreen;
 
-public class AltitudePlotScreen extends MainScreen {
+public class AltitudePlotScreen extends FullScreen {
 	RouteStats stats;
 	Vector points;
 
 	public AltitudePlotScreen(Route route) {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-		setTitle(route.getName() + " - alititude plot");
+		super(Screen.DEFAULT_CLOSE | Screen.DEFAULT_MENU);
 
 		stats = RouteStatsGenerator.generateStats(route);
 		points = route.getPoints();
