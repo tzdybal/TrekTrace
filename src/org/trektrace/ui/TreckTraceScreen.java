@@ -1,12 +1,7 @@
 package org.trektrace.ui;
 
-import javax.microedition.location.LocationProvider;
-
-import net.rim.device.api.gps.BlackBerryCriteria;
-import net.rim.device.api.gps.BlackBerryLocationProvider;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.ListField;
 import net.rim.device.api.ui.container.MainScreen;
 
@@ -15,7 +10,6 @@ import org.trektrace.dao.BaseDao;
 import org.trektrace.db.DatabaseException;
 import org.trektrace.db.DatabaseManager;
 import org.trektrace.entities.Route;
-import org.trektrace.gps.GPSListener;
 
 /**
  * A class extending the MainScreen class, which provides default standard
@@ -41,7 +35,9 @@ public final class TreckTraceScreen extends MainScreen {
 		};
 		MenuItem mapItem = new MenuItem("Show on map", 10, 2) {
 			public void run() {
-				Dialog.inform("show on map");
+				Route selected = getSelectedRoute();
+				((UiApplication) getApplication())
+						.pushScreen(new MapScreen(selected));
 			}
 		};
 		MenuItem statItem = new MenuItem("Show statistics", 10, 3) {
