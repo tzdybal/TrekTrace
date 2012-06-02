@@ -93,10 +93,9 @@ public final class TreckTraceScreen extends MainScreen {
 		initDatabase();
 		initUI();
 
-		BlackBerryCriteria criteria = new BlackBerryCriteria();
-		BlackBerryLocationProvider provider = (BlackBerryLocationProvider) LocationProvider
-				.getInstance(criteria);
-		provider.setLocationListener(new GPSListener(), 10, -1, -1);
+		//BlackBerryCriteria criteria = new BlackBerryCriteria();
+		//BlackBerryLocationProvider provider = (BlackBerryLocationProvider) LocationProvider
+		//		.getInstance(criteria);
 	}
 
 	private Route getSelectedRoute() {

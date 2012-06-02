@@ -75,7 +75,7 @@ public class PointDao extends BaseDao {
 		Point p = new Point();
 		p.setId(new Long(row.getLong(0)));
 		p.setRouteId(new Long(row.getLong(1)));
-		p.setAltitude(row.getDouble(2));
+		p.setAltitude(row.getFloat(2));
 		p.setLatitude(row.getDouble(3));
 		p.setLongitude(row.getDouble(4));
 		p.setDate(new Date(row.getInteger(5)));
