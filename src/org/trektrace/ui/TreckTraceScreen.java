@@ -4,14 +4,11 @@ import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.ListField;
-import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.MainScreen;
 
 import org.trektrace.RouteListCallback;
-import org.trektrace.dao.BaseDao;
 import org.trektrace.dao.RouteDao;
 import org.trektrace.db.DatabaseException;
-import org.trektrace.db.DatabaseManager;
 import org.trektrace.entities.Route;
 
 /**
