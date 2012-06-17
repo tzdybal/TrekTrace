@@ -16,8 +16,7 @@ public class RouteDao extends BaseDao {
 		if (objectId == null)
 			return null;
 		try {
-			Statement stmt = db
-					.createStatement("SELECT name, description FROM routes WHERE id = ?");
+			Statement stmt = db.createStatement("SELECT name, description FROM routes WHERE id = ?");
 			stmt.prepare();
 			stmt.bind(1, objectId.longValue());
 			Row row = DBUtil.getFirstRow(stmt);
@@ -45,8 +44,7 @@ public class RouteDao extends BaseDao {
 
 			return route;
 		} catch (Exception e) {
-			throw new DatabaseException(getClass().getName() + ".read() "
-					+ e.getMessage());
+			throw new DatabaseException(getClass().getName() + ".read() " + e.getMessage());
 		} finally {
 		}
 	}
@@ -57,11 +55,9 @@ public class RouteDao extends BaseDao {
 		try {
 			Statement stmt;
 			if (r.getId() == null) {
-				stmt = db
-						.createStatement("INSERT INTO routes (name, description) VALUES (?1, ?2)");
+				stmt = db.createStatement("INSERT INTO routes (name, description) VALUES (?1, ?2)");
 			} else {
-				stmt = db
-						.createStatement("UPDATE routes SET name = ?1, description = ?2 WHERE id = ?3");
+				stmt = db.createStatement("UPDATE routes SET name = ?1, description = ?2 WHERE id = ?3");
 
 			}
 			stmt.prepare();
@@ -91,18 +87,41 @@ public class RouteDao extends BaseDao {
 
 			stmt.close();
 		} catch (Exception e) {
-			throw new DatabaseException(getClass().getName()
-					+ ".saveOrUpdate() " + e.getMessage());
+			throw new DatabaseException(getClass().getName() + ".saveOrUpdate() " + e.getMessage());
 		}
+	}
 
+	public void saveWithoutPoints(Route o) throws DatabaseException {
+		Route r = (Route) o;
+
+		try {
+			Statement stmt;
+			if (r.getId() == null) {
+				stmt = db.createStatement("INSERT INTO routes (name, description) VALUES (?1, ?2)");
+			} else {
+				stmt = db.createStatement("UPDATE routes SET name = ?1, description = ?2 WHERE id = ?3");
+
+			}
+			stmt.prepare();
+			stmt.bind(1, r.getName());
+			stmt.bind(2, r.getDescription());
+			if (r.getId() != null) {
+				stmt.bind(3, r.getId().longValue());
+			}
+			stmt.execute();
+			if (r.getId() == null) {
+				r.setId(new Long(db.lastInsertedRowID()));
+			}
+			stmt.close();
+		} catch (Exception e) {
+			throw new DatabaseException(getClass().getName() + ".saveOrUpdate() " + e.getMessage());
+		}
 	}
 
 	public void remove(Long objectId) throws DatabaseException {
 		try {
-			Statement points = db
-					.createStatement("DELETE FROM points WHERE route_id = ?");
-			Statement route = db
-					.createStatement("DELETE FROM routes WHERE id = ?");
+			Statement points = db.createStatement("DELETE FROM points WHERE route_id = ?");
+			Statement route = db.createStatement("DELETE FROM routes WHERE id = ?");
 			points.prepare();
 			route.prepare();
 
@@ -117,8 +136,7 @@ public class RouteDao extends BaseDao {
 			points.close();
 			route.close();
 		} catch (Exception e) {
-			throw new DatabaseException(getClass().getName() + ".remove() "
-					+ e.getMessage());
+			throw new DatabaseException(getClass().getName() + ".remove() " + e.getMessage());
 		}
 	}
 
@@ -126,18 +144,18 @@ public class RouteDao extends BaseDao {
 		try {
 			Statement routesStmt = db.createStatement("SELECT id FROM routes");
 			routesStmt.prepare();
-			
+
 			db.beginTransaction();
-			
+
 			Cursor c = routesStmt.getCursor();
-			
+
 			Vector routes = new Vector();
 			while (c.next()) {
 				routes.addElement(read(new Long(c.getRow().getLong(0))));
 			}
-			
+
 			db.commitTransaction();
-			
+
 			return routes;
 		} catch (Exception ex) {
 			throw new DatabaseException(ex);

@@ -22,10 +22,8 @@ public class RouteStatsGenerator {
 
 		Vector points = route.getPoints();
 
-		QualifiedCoordinates lastCoords = new QualifiedCoordinates(0, 0, 0,
-				Float.NaN, Float.NaN);
-		QualifiedCoordinates coords = new QualifiedCoordinates(0, 0, 0,
-				Float.NaN, Float.NaN);
+		QualifiedCoordinates lastCoords = new QualifiedCoordinates(0, 0, 0, Float.NaN, Float.NaN);
+		QualifiedCoordinates coords = new QualifiedCoordinates(0, 0, 0, Float.NaN, Float.NaN);
 
 		for (int i = 0; i < points.size(); ++i) {
 			Point p = (Point) points.elementAt(i);
@@ -33,7 +31,8 @@ public class RouteStatsGenerator {
 			sumA += alt;
 			if (alt < minA) {
 				minA = alt;
-			} else if (alt > maxA) {
+			}
+			if (alt > maxA) {
 				maxA = alt;
 			}
 
@@ -44,12 +43,10 @@ public class RouteStatsGenerator {
 			if (i > 0) {
 				double dist = coords.distance(lastCoords);
 				distance += dist;
-				if (alt > lastCoords.getAltitude()) {
-					asc += dist;
-				}
-				if (alt < lastCoords.getAltitude()) {
-					desc += dist;
-				}
+				/*
+				 * if (alt > lastCoords.getAltitude()) { asc += dist; } if (alt
+				 * < lastCoords.getAltitude()) { desc += dist; }
+				 */
 			}
 
 			lastCoords.setAltitude(coords.getAltitude());
@@ -57,18 +54,17 @@ public class RouteStatsGenerator {
 			lastCoords.setLatitude(coords.getLatitude());
 		}
 
-		time = ((Point) points.lastElement()).getDate().getTime()
-				- ((Point) points.firstElement()).getDate().getTime();
+		time = ((Point) points.lastElement()).getDate().getTime() - ((Point) points.firstElement()).getDate().getTime();
 
 		stats.setMaxAltitude(maxA);
 		stats.setMinAltitude(minA);
 		stats.setAvgAltitude(sumA / points.size());
-		stats.setAscending(asc);
-		stats.setDescending(desc);
+		// stats.setAscending(asc);
+		// stats.setDescending(desc);
 		stats.setDistance(distance);
 		stats.setTime(time);
 		// distance is in meters, time in miliseconds, speed in km/h
-		stats.setAvgSpeed((distance / 1000) / (time / 1000 / 3600));
+		stats.setAvgSpeed((distance / 1000.0) / (time / 1000.0 / 3600.0));
 
 		return stats;
 	}

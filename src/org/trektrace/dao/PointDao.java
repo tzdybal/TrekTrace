@@ -13,7 +13,8 @@ import org.trektrace.entities.Point;
 public class PointDao extends BaseDao {
 
 	public Object read(Long objectId) throws DatabaseException {
-		if (objectId == null) return null;
+		if (objectId == null)
+			return null;
 		try {
 			Statement stmt = db
 					.createStatement("SELECT id, route_id, altitude, latitude, longitude, date FROM points WHERE id = ?");
@@ -46,7 +47,7 @@ public class PointDao extends BaseDao {
 			if (p.getId() != null) {
 				stmt.bind(6, p.getId().longValue());
 			}
-			
+
 			stmt.execute();
 			stmt.close();
 
@@ -70,7 +71,6 @@ public class PointDao extends BaseDao {
 		}
 	}
 
-	
 	Point createPoint(Row row) throws DataTypeException {
 		Point p = new Point();
 		p.setId(new Long(row.getLong(0)));

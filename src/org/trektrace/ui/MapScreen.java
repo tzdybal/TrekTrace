@@ -15,7 +15,7 @@ public class MapScreen extends FullScreen {
 
 	public MapScreen(Route route) {
 		super(Screen.DEFAULT_CLOSE | Screen.DEFAULT_MENU);
-		
+
 		double latitude = 0;
 		double longitude = 0;
 
@@ -26,12 +26,10 @@ public class MapScreen extends FullScreen {
 			latitude += p.getLatitude();
 			longitude += p.getLongitude();
 
-			coords[i] = new Coordinates(p.getLatitude(), p.getLongitude(),
-					p.getAltitude());
+			coords[i] = new Coordinates(p.getLatitude(), p.getLongitude(), p.getAltitude());
 		}
 
-		Coordinates center = new Coordinates(latitude / points.size(),
-				longitude / points.size(), 0);
+		Coordinates center = new Coordinates(latitude / points.size(), longitude / points.size(), 0);
 
 		mapField = new RouteMapField(coords);
 		add(mapField);
@@ -43,11 +41,9 @@ public class MapScreen extends FullScreen {
 	public boolean navigationMovement(int dx, int dy, int status, int time) {
 		if ((status & KeypadListener.STATUS_ALT) != 0 || (status & KeypadListener.STATUS_ALT_LOCK) != 0) {
 			if (dy > 0) {
-				mapField.setZoom(Math.max(mapField.getZoom() - 1,
-						mapField.getMinZoom()));
+				mapField.setZoom(Math.max(mapField.getZoom() - 1, mapField.getMinZoom()));
 			} else if (dy < 0) {
-				mapField.setZoom(Math.min(mapField.getZoom() + 1,
-						mapField.getMaxZoom()));
+				mapField.setZoom(Math.min(mapField.getZoom() + 1, mapField.getMaxZoom()));
 			}
 		} else {
 			int mx = 0;

@@ -14,28 +14,31 @@ import net.rim.device.api.ui.component.ListFieldCallback;
 public class RouteListCallback implements ListFieldCallback {
 	private RouteDao routeDao;
 	private Vector routes;
-	
+
 	public RouteListCallback() throws DatabaseException {
 		routeDao = new RouteDao();
+		refresh();
+	}
+
+	public void refresh() throws DatabaseException {
 		routes = routeDao.getAllRoutes();
 	}
-	
+
 	public int indexOfList(ListField listField, String prefix, int start) {
 		return routes.indexOf(prefix, start);
 	}
-	
+
 	public int getPreferredWidth(ListField listField) {
 		return Display.getWidth();
 	}
-	
+
 	public Object get(ListField listField, int index) {
 		return routes.elementAt(index);
 	}
-	
-	public void drawListRow(ListField listField, Graphics graphics, int index,
-			int y, int width) {
+
+	public void drawListRow(ListField listField, Graphics graphics, int index, int y, int width) {
 		Route route = (Route) routes.elementAt(index);
-		
+
 		graphics.drawText(route.getName(), 0, y, 0, width);
 	}
 

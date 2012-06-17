@@ -1,5 +1,9 @@
 package org.trektrace;
 
+import org.trektrace.dao.BaseDao;
+import org.trektrace.db.DatabaseException;
+import org.trektrace.db.DatabaseManager;
+import org.trektrace.ui.HomeScreen;
 import org.trektrace.ui.TreckTraceScreen;
 
 import net.rim.device.api.ui.UiApplication;
@@ -10,7 +14,7 @@ import net.rim.device.api.ui.component.Dialog;
  * interface.
  */
 public class TreckTraceApp extends UiApplication {
-	private TreckTraceScreen mainScreen;
+	private HomeScreen mainScreen;
 
 	/**
 	 * Entry point for application
@@ -29,7 +33,7 @@ public class TreckTraceApp extends UiApplication {
 	 * Creates a new TreckTraceApp object
 	 */
 	public TreckTraceApp() {
-		mainScreen = new TreckTraceScreen();
+		mainScreen = new HomeScreen();
 		pushScreen(mainScreen);
 	}
 
@@ -37,7 +41,14 @@ public class TreckTraceApp extends UiApplication {
 		invokeLater(new Runnable() {
 			public void run() {
 				try {
-					mainScreen.init();
+					if (!DatabaseManager.databaseExists()) {
+						DatabaseManager.createDatabase();
+					}
+					BaseDao.setDatabase(DatabaseManager.getDatabase());
+
+					if (BaseDao.getDatabase() == null) {
+						throw new DatabaseException("Database error!");
+					}
 				} catch (Exception ex) {
 					Dialog.alert(ex.getMessage());
 				}

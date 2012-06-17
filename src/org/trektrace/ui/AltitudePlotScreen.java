@@ -39,40 +39,36 @@ public class AltitudePlotScreen extends FullScreen {
 		int dh2 = dh1 - topSpace;
 
 		int pw = (int) stats.getDistance();
-		int ph = (int) Math.floor(stats.getMaxAltitude()
-				- stats.getMinAltitude() + 0.5);
-		
+		int ph = (int) Math.floor(stats.getMaxAltitude() - stats.getMinAltitude() + 0.5);
+
 		graphics.setColor(0x000000FF);
-		QualifiedCoordinates lastCoords = new QualifiedCoordinates(0, 0, 0,
-				Float.NaN, Float.NaN);
-		QualifiedCoordinates coords = new QualifiedCoordinates(0, 0, 0,
-				Float.NaN, Float.NaN);
+		QualifiedCoordinates lastCoords = new QualifiedCoordinates(0, 0, 0, Float.NaN, Float.NaN);
+		QualifiedCoordinates coords = new QualifiedCoordinates(0, 0, 0, Float.NaN, Float.NaN);
 		double dist = 0;
-	
+
 		for (int i = 0; i < points.size(); ++i) {
 			Point p = (Point) points.elementAt(i);
-			
+
 			float alt = p.getAltitude();
 			int cnt = 1;
 			if (i - 2 >= 0) {
-				alt += ((Point) points.elementAt(i-2)).getAltitude();
+				alt += ((Point) points.elementAt(i - 2)).getAltitude();
 				++cnt;
 			}
 			if (i > 0) {
-				alt += ((Point) points.elementAt(i-1)).getAltitude();
+				alt += ((Point) points.elementAt(i - 1)).getAltitude();
 				++cnt;
 			}
 			if (i + 1 < points.size()) {
-				alt += ((Point) points.elementAt(i+1)).getAltitude();
+				alt += ((Point) points.elementAt(i + 1)).getAltitude();
 				++cnt;
 			}
 			if (i + 2 < points.size()) {
-				alt += ((Point) points.elementAt(i+2)).getAltitude();
+				alt += ((Point) points.elementAt(i + 2)).getAltitude();
 				++cnt;
 			}
 			alt /= cnt;
-			pty[i] = (int) (dh1 - (alt - stats
-					.getMinAltitude()) / ph * dh2);
+			pty[i] = (int) (dh1 - (alt - stats.getMinAltitude()) / ph * dh2);
 
 			coords.setAltitude(p.getAltitude());
 			coords.setLongitude(p.getLongitude());
@@ -94,18 +90,18 @@ public class AltitudePlotScreen extends FullScreen {
 		pty[ptx.length - 1] = dh1;
 
 		graphics.setDrawingStyle(Graphics.DRAWSTYLE_ANTIALIASED, true);
-		
+
 		graphics.setColor(0x0000FF00);
 		graphics.drawFilledPath(ptx, pty, null, null);
-		
+
 		graphics.setColor(0x00000000);
 		int fontSize = 14;
 		FontFamily fontFamily[] = FontFamily.getFontFamilies();
 		Font f = fontFamily[0].getFont(FontFamily.SCALABLE_FONT, fontSize);
 		graphics.setFont(f);
-		//graphics.drawText(stats.getMinAltitude()+"m", 1, dh1 - fontSize);
-		//graphics.drawText(stats.getMaxAltitude()+"m", 1, topSpace);
-		
+		// graphics.drawText(stats.getMinAltitude()+"m", 1, dh1 - fontSize);
+		// graphics.drawText(stats.getMaxAltitude()+"m", 1, topSpace);
+
 		int every = 25;
 		if (ph > 100) {
 			every = 50;
@@ -115,14 +111,14 @@ public class AltitudePlotScreen extends FullScreen {
 			every = 200;
 		} else if (ph > 2000) {
 			every = 500;
-		} else if ( ph > 4000) {
+		} else if (ph > 4000) {
 			every = 1000;
 		}
-		
+
 		graphics.setStipple(0xF0F0F0F0);
 		for (int i = (int) (stats.getMinAltitude() / every); i < stats.getMaxAltitude() / every; ++i) {
-			int h = (int) (dh1 - (every*i - stats.getMinAltitude()) / ph * dh2);
-			int textWidth = graphics.drawText(every*i+"m", 1, h-fontSize/2);
+			int h = (int) (dh1 - (every * i - stats.getMinAltitude()) / ph * dh2);
+			int textWidth = graphics.drawText(every * i + "m", 1, h - fontSize / 2);
 			graphics.setDrawingStyle(Graphics.DRAWSTYLE_ANTIALIASED, false);
 			graphics.drawLine(textWidth + 2, h, dw, h);
 			graphics.setDrawingStyle(Graphics.DRAWSTYLE_ANTIALIASED, true);
