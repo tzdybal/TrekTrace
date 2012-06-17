@@ -4,6 +4,7 @@ import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.ListField;
+import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.MainScreen;
 
 import org.trektrace.RouteListCallback;
@@ -29,25 +30,25 @@ public final class TreckTraceScreen extends MainScreen {
 		setTitle("TrekTrace");
 		routeList = new ListField();
 		add(routeList);
-		MenuItem altitudeItem = new MenuItem("Show alitude plot", 10, 1) {
+		MenuItem altitudeItem = new MenuItem("Show alitude plot", 0, 1) {
 			public void run() {
 				Route selected = getSelectedRoute();
 				((UiApplication) getApplication()).pushScreen(new AltitudePlotScreen(selected));
 			}
 		};
-		MenuItem mapItem = new MenuItem("Show on map", 10, 2) {
+		MenuItem mapItem = new MenuItem("Show on map", 0, 2) {
 			public void run() {
 				Route selected = getSelectedRoute();
 				((UiApplication) getApplication()).pushScreen(new MapScreen(selected));
 			}
 		};
-		MenuItem statItem = new MenuItem("Show statistics", 10, 3) {
+		MenuItem statItem = new MenuItem("Show statistics", 0, 3) {
 			public void run() {
 				Route selected = getSelectedRoute();
 				((UiApplication) getApplication()).pushScreen(new RouteStatsScreen(selected));
 			}
 		};
-		MenuItem renameItem = new MenuItem("Rename route", 20000, 1) {
+		MenuItem renameItem = new MenuItem("Rename route", 0, 10) {
 			public void run() {
 				Route selected = getSelectedRoute();
 				RouteNameDialog d = new RouteNameDialog(selected);
@@ -64,7 +65,7 @@ public final class TreckTraceScreen extends MainScreen {
 				}
 			}
 		};
-		MenuItem removeItem = new MenuItem("Delete route", 20000, 2) {
+		MenuItem removeItem = new MenuItem("Delete route", 0, 11) {
 			public void run() {
 				Route selected = getSelectedRoute();
 				if (Dialog.ask(Dialog.D_DELETE) == Dialog.DELETE) {
@@ -83,8 +84,10 @@ public final class TreckTraceScreen extends MainScreen {
 		addMenuItem(altitudeItem);
 		addMenuItem(mapItem);
 		addMenuItem(statItem);
+		addMenuItem(MenuItem.separator(0));
 		addMenuItem(renameItem);
 		addMenuItem(removeItem);
+		addMenuItem(MenuItem.separator(0));
 	}
 
 	private void initUI() throws DatabaseException {

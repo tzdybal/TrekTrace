@@ -12,6 +12,8 @@ import org.trektrace.entities.Point;
 import org.trektrace.entities.Route;
 
 public class RouteDao extends BaseDao {
+	private PointDao pointDao = new PointDao();
+
 	public Object read(Long objectId) throws DatabaseException {
 		if (objectId == null)
 			return null;
@@ -75,12 +77,11 @@ public class RouteDao extends BaseDao {
 			}
 
 			Vector v = r.getPoints();
-			PointDao pd = new PointDao();
 
 			for (int i = 0; i < v.size(); ++i) {
 				Point p = (Point) v.elementAt(i);
 				p.setRouteId(r.getId());
-				pd.saveOrUpdate(p);
+				pointDao.saveOrUpdate(p);
 			}
 
 			db.commitTransaction();
@@ -160,6 +161,10 @@ public class RouteDao extends BaseDao {
 		} catch (Exception ex) {
 			throw new DatabaseException(ex);
 		}
+	}
+
+	public PointDao getPointDao() {
+		return pointDao;
 	}
 
 }

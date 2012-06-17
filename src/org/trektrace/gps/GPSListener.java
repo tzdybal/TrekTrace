@@ -9,24 +9,40 @@ import javax.microedition.location.QualifiedCoordinates;
 
 import net.rim.device.api.ui.component.Dialog;
 
+import org.trektrace.dao.PointDao;
 import org.trektrace.dao.RouteDao;
 import org.trektrace.entities.Point;
 import org.trektrace.entities.Route;
+import org.trektrace.ui.HomeScreen;
 
 public class GPSListener implements LocationListener {
-
 	private RouteDao routeDao;
+	private PointDao pointDao;
+	private HomeScreen screen;
 	private Route route;
 
-	public GPSListener(Route route) {
+	public GPSListener(Route route, HomeScreen screen) {
 		this.route = route;
+		this.screen = screen;
 		routeDao = new RouteDao();
+		pointDao = routeDao.getPointDao();
+		try {
+			routeDao.saveOrUpdate(route);
+		} catch (Exception e) {
+			Dialog.alert(e.getMessage());
+		}
 	}
 
 	public void locationUpdated(LocationProvider provider, Location location) {
 		if (location.isValid()) {
-			Point p = new Point();
 			QualifiedCoordinates coords = location.getQualifiedCoordinates();
+			
+			screen.setCurrentAltitude(coords.getAltitude());
+			screen.setCurrentLatitude(coords.getLatitude());
+			screen.setCurrentLongitude(coords.getLongitude());
+			
+			Point p = new Point();
+			
 			p.setAltitude(coords.getAltitude());
 			p.setLatitude(coords.getLatitude());
 			p.setLongitude(coords.getLongitude());
@@ -34,8 +50,8 @@ public class GPSListener implements LocationListener {
 
 			route.addPoint(p);
 			try {
-				// TODO optimize this
-				routeDao.saveOrUpdate(route);
+				//routeDao.saveOrUpdate(route);
+				pointDao.saveOrUpdate(p);
 			} catch (Exception e) {
 				Dialog.alert(e.getMessage());
 			}
