@@ -1,11 +1,10 @@
 package org.trektrace.ui;
 
-import org.trektrace.entities.Route;
-
-import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.EditField;
+
+import org.trektrace.entities.Route;
 
 public class RouteNameDialog extends Dialog {
 	private EditField nameField = new EditField();

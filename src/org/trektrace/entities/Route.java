@@ -24,6 +24,7 @@ public class Route extends Entity {
 	}
 
 	public void addPoint(Point point) {
+		point.setRouteId(getId());
 		points.addElement(point);
 	}
 

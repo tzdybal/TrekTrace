@@ -14,16 +14,42 @@ import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.component.LabelField;
+import net.rim.device.api.ui.component.SeparatorField;
+import net.rim.device.api.ui.component.TextField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
 
 public class HomeScreen extends MainScreen {
 	private BlackBerryLocationProvider provider = null;
+	
+	private Formatter formatter = new Formatter();
+
+	private TextField latitudeLabel;
+
+	private TextField longitudeLabel;
+
+	private TextField altitudeLabel;
 
 	public HomeScreen() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 		setTitle("TreckTrace");
-
+	
+		latitudeLabel = new TextField();
+		latitudeLabel.setLabel(" latitude:");
+		longitudeLabel = new TextField();
+		longitudeLabel.setLabel(" longitude:");
+		altitudeLabel = new TextField();
+		altitudeLabel.setLabel(" altitude:");
+		
+		add(new LabelField("Current Position:"));
+		
+		add(latitudeLabel);
+		add(longitudeLabel);
+		add(altitudeLabel);
+		
+		add(new SeparatorField());
+		
 		final ButtonField routeListButton = new ButtonField("Saved routes", Field.FIELD_HCENTER);
 		final ButtonField startTracingButton = new ButtonField("Start tracing");
 		final ButtonField stopTracingButton = new ButtonField("Stop tracing");
@@ -55,8 +81,10 @@ public class HomeScreen extends MainScreen {
 						if (provider == null) {
 							BlackBerryCriteria criteria = new BlackBerryCriteria();
 							provider = (BlackBerryLocationProvider) LocationProvider.getInstance(criteria);
-							provider.setLocationListener(new GPSListener(route), 10, -1, -1);
+							provider.setLocationListener(new GPSListener(route, HomeScreen.this), 10, -1, -1);
 							stopTracingButton.setEnabled(true);
+							stopTracingButton.setFocus();
+							startTracingButton.setEnabled(false);
 						}
 					}
 				} catch (Exception e) {
@@ -71,6 +99,7 @@ public class HomeScreen extends MainScreen {
 				provider.setLocationListener(null, -1, -1, -1);
 				routeListButton.setFocus();
 				stopTracingButton.setEnabled(false);
+				startTracingButton.setEnabled(true);
 			}
 		});
 
@@ -79,9 +108,35 @@ public class HomeScreen extends MainScreen {
 
 		add(hfm);
 		add(routeListButton);
+		
+		startTracingButton.setFocus();
 	}
 
 	public boolean isDirty() {
 		return false;
 	}
+
+	public void setCurrentAltitude(float altitude) {
+		altitudeLabel.setText(formatter.formatNumber(altitude, 2));
+		//doPaint();
+	}
+	
+	public void setCurrentLatitude(double latitude) {
+		latitudeLabel.setText(decimalToDegree(latitude));
+		doPaint();
+	}
+	
+	public void setCurrentLongitude(double longitude) {
+		longitudeLabel.setText(decimalToDegree(longitude));
+		//doPaint();
+	}
+	
+	private String decimalToDegree(double value) {		
+		int deg = (int) Math.abs(value);
+		double min = (Math.abs(value) - deg) * 60 % 60;
+		double sec = min * 60 % 60;
+		
+		return deg + "° " + (int)min + "\" " + formatter.formatNumber(sec, 3) + "'";
+	}
+	
 }
