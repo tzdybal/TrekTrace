@@ -30,10 +30,6 @@ public class RouteStatsScreen extends MainScreen {
 		add(new LabelField("Distance [km]: " + f.formatNumber(dist, 2)));
 		add(new LabelField("Time [h]: " + f.formatNumber(time, 2)));
 		add(new LabelField("Average speed [km/h]: " + f.formatNumber(stats.getAvgSpeed(), 2)));
-		// add(new LabelField("Distance ascending [km]: " +
-		// f.formatNumber(stats.getAscending() / 1000, 2)));
-		// add(new LabelField("Distance descending [km]: " +
-		// f.formatNumber(stats.getDescending() / 1000, 2)));
 	}
 
 }

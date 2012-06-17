@@ -53,6 +53,13 @@ public class TreckTraceApp extends UiApplication {
 				}
 			}
 		});
+
+		Thread th = new Thread() {
+			public void run() {
+				mainScreen.updateCurrentLocation();
+			}
+		};
+		th.start();
 	}
 
 }
