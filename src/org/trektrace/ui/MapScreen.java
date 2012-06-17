@@ -4,9 +4,9 @@ import java.util.Vector;
 
 import javax.microedition.location.Coordinates;
 
-import net.rim.device.api.system.KeypadListener;
 import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.container.FullScreen;
+
 import org.trektrace.entities.Point;
 import org.trektrace.entities.Route;
 
@@ -38,28 +38,30 @@ public class MapScreen extends FullScreen {
 		mapField.setZoom(mapField.getMaxZoom() / 2);
 	}
 
-	public boolean navigationMovement(int dx, int dy, int status, int time) {
-		if ((status & KeypadListener.STATUS_ALT) != 0 || (status & KeypadListener.STATUS_ALT_LOCK) != 0) {
-			if (dy > 0) {
-				mapField.setZoom(Math.max(mapField.getZoom() - 1, mapField.getMinZoom()));
-			} else if (dy < 0) {
-				mapField.setZoom(Math.min(mapField.getZoom() + 1, mapField.getMaxZoom()));
-			}
-		} else {
-			int mx = 0;
-			int my = 0;
-			int skip = 25;
-			if (dx > 0)
-				mx = skip;
-			else if (dx < 0)
-				mx = -skip;
-			if (dy > 0)
-				my = skip;
-			else if (dy < 0)
-				my = -skip;
-
-			mapField.move(mx, my);
+	protected boolean keyChar(char c, int status, int time) {
+		if (c == 'i' || c == 'I') {
+			mapField.setZoom(Math.max(mapField.getZoom() - 1, mapField.getMinZoom()));
+		} else if (c == 'o' || c == 'O') {
+			mapField.setZoom(Math.min(mapField.getZoom() + 1, mapField.getMaxZoom()));
 		}
+		return super.keyChar(c, status, time);
+	}
+
+	public boolean navigationMovement(int dx, int dy, int status, int time) {
+
+		int mx = 0;
+		int my = 0;
+		int skip = 25;
+		if (dx > 0)
+			mx = skip;
+		else if (dx < 0)
+			mx = -skip;
+		if (dy > 0)
+			my = skip;
+		else if (dy < 0)
+			my = -skip;
+
+		mapField.move(mx, my);
 		return true;
 	}
 
