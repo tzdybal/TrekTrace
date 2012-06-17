@@ -36,24 +36,26 @@ public class GPSListener implements LocationListener {
 	public void locationUpdated(LocationProvider provider, Location location) {
 		if (location.isValid()) {
 			QualifiedCoordinates coords = location.getQualifiedCoordinates();
-			
+
 			screen.setCurrentAltitude(coords.getAltitude());
 			screen.setCurrentLatitude(coords.getLatitude());
 			screen.setCurrentLongitude(coords.getLongitude());
-			
+
 			Point p = new Point();
-			
+
 			p.setAltitude(coords.getAltitude());
 			p.setLatitude(coords.getLatitude());
 			p.setLongitude(coords.getLongitude());
 			p.setDate(new Date());
 
-			route.addPoint(p);
-			try {
-				//routeDao.saveOrUpdate(route);
-				pointDao.saveOrUpdate(p);
-			} catch (Exception e) {
-				Dialog.alert(e.getMessage());
+			if (route != null) {
+				route.addPoint(p);
+				try {
+					// routeDao.saveOrUpdate(route);
+					pointDao.saveOrUpdate(p);
+				} catch (Exception e) {
+					Dialog.alert(e.getMessage());
+				}
 			}
 		}
 	}

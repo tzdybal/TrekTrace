@@ -96,17 +96,6 @@ public final class TreckTraceScreen extends MainScreen {
 		routeList.setSize(callback.getSize());
 	}
 
-	private void initDatabase() throws DatabaseException {
-		if (!DatabaseManager.databaseExists()) {
-			DatabaseManager.createDatabase();
-		}
-		BaseDao.setDatabase(DatabaseManager.getDatabase());
-
-		if (BaseDao.getDatabase() == null) {
-			throw new DatabaseException("Database error!");
-		}
-	}
-
 	public void init() throws Exception {
 		// initDatabase();
 		initUI();
