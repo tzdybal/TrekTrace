@@ -16,12 +16,11 @@ import org.trektrace.entities.Route;
 public class GPSListener implements LocationListener {
 
 	private RouteDao routeDao;
-	private Route route = new Route();
+	private Route route;
 
-	public GPSListener() {
+	public GPSListener(Route route) {
+		this.route = route;
 		routeDao = new RouteDao();
-		route.setName(new Date().toString());
-		route.setDescription("Hardcoded description");
 	}
 
 	public void locationUpdated(LocationProvider provider, Location location) {

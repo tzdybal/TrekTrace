@@ -15,7 +15,7 @@ public class RouteMapField extends MapField {
 
 	public void paint(Graphics graphics) {
 		super.paint(graphics);
-		
+
 		graphics.setDrawingStyle(Graphics.DRAWSTYLE_ANTIALIASED, true);
 		graphics.setColor(0x000000FF);
 
@@ -26,7 +26,7 @@ public class RouteMapField extends MapField {
 			convertWorldToField(route[i], current);
 
 			graphics.drawLine(last.x, last.y, current.x, current.y);
-			
+
 			last.set(current);
 		}
 	}

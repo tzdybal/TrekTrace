@@ -64,39 +64,26 @@ public class DatabaseManager {
 
 	private static void createTables() throws DatabaseException {
 		try {
-			Statement pointsStmt = db.createStatement("CREATE TABLE IF NOT EXISTS points" +
-					"(" +
-					"id INTEGER PRIMARY KEY" +
-					", route_id INTEGER NOT NULL" +
-					", altitude DOUBLE NOT NULL" +
-					", latitude DOUBLE NOT NULL" +
-					", longitude DOUBLE NOT NULL" +
-					", date INTEGER NOT NULL" +
-					")");
-			
-			Statement routesStmt = db.createStatement("CREATE TABLE IF NOT EXISTS routes " +
-					"(" +
-					"id INTEGER PRIMARY KEY" +
-					", name TEXT NOT NULL" +
-					", description TEXT" +
-					")");
-			
-			Statement settingsStmt = db.createStatement("CREATE TABLE IF NOT EXISTS settings " +
-					"(" +
-					"key TEXT NOT NULL" +
-					", value TEXT" +
-					")");
-			
+			Statement pointsStmt = db.createStatement("CREATE TABLE IF NOT EXISTS points" + "("
+					+ "id INTEGER PRIMARY KEY" + ", route_id INTEGER NOT NULL" + ", altitude DOUBLE NOT NULL"
+					+ ", latitude DOUBLE NOT NULL" + ", longitude DOUBLE NOT NULL" + ", date INTEGER NOT NULL" + ")");
+
+			Statement routesStmt = db.createStatement("CREATE TABLE IF NOT EXISTS routes " + "("
+					+ "id INTEGER PRIMARY KEY" + ", name TEXT NOT NULL" + ", description TEXT" + ")");
+
+			Statement settingsStmt = db.createStatement("CREATE TABLE IF NOT EXISTS settings " + "("
+					+ "key TEXT NOT NULL" + ", value TEXT" + ")");
+
 			pointsStmt.prepare();
 			routesStmt.prepare();
 			settingsStmt.prepare();
-			
+
 			db.beginTransaction();
 			pointsStmt.execute();
 			routesStmt.execute();
 			settingsStmt.execute();
 			db.commitTransaction();
-			
+
 			pointsStmt.close();
 			routesStmt.close();
 			settingsStmt.close();
