@@ -1,13 +1,15 @@
 package org.trektrace.entities;
 
-public abstract class Entity {
-	private Long id;
+import com.ianywhere.ultralitej12.UUIDValue;
 
-	public Long getId() {
+public abstract class Entity {
+	private UUIDValue id;
+
+	public UUIDValue getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(UUIDValue id) {
 		this.id = id;
 	}
 }

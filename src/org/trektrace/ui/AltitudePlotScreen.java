@@ -14,6 +14,7 @@ import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.FontFamily;
 import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.Screen;
+import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.FullScreen;
 
 public class AltitudePlotScreen extends FullScreen {

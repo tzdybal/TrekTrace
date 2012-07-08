@@ -15,8 +15,6 @@ public class RouteStatsGenerator {
 		double minA = Double.MAX_VALUE;
 		double maxA = Double.MIN_VALUE;
 		double sumA = 0;
-		double asc = 0;
-		double desc = 0;
 		double distance = 0;
 		long time = 0;
 

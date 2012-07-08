@@ -3,5 +3,10 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="res"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/net.rim.ejde.BlackBerryVMInstallType/BlackBerry JRE 7.0.0"/>
+	<classpathentry kind="lib" path="C:/Program Files/SQL Anywhere 12/UltraLite/UltraLiteJ/BlackBerry4.2/UltraLiteJ12.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/Program Files/SQL Anywhere 12/UltraLite/UltraLiteJ/BlackBerry4.2/Html/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

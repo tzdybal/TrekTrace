@@ -2,18 +2,20 @@ package org.trektrace.entities;
 
 import java.util.Date;
 
+import com.ianywhere.ultralitej12.UUIDValue;
+
 public class Point extends Entity {
-	private Long routeId;
+	private UUIDValue routeId;
 	private float altitude;
 	private double latitude;
 	private double longitude;
 	private Date date;
 
-	public Long getRouteId() {
+	public UUIDValue getRouteId() {
 		return routeId;
 	}
 
-	public void setRouteId(Long routeId) {
+	public void setRouteId(UUIDValue routeId) {
 		this.routeId = routeId;
 	}
 
