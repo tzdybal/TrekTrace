@@ -4,18 +4,17 @@ import java.util.Vector;
 
 import javax.microedition.location.QualifiedCoordinates;
 
-import org.trektrace.RouteStatsGenerator;
-import org.trektrace.entities.Point;
-import org.trektrace.entities.Route;
-import org.trektrace.entities.RouteStats;
-
 import net.rim.device.api.system.Display;
 import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.FontFamily;
 import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.Screen;
-import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.FullScreen;
+
+import org.trektrace.RouteStatsGenerator;
+import org.trektrace.entities.Point;
+import org.trektrace.entities.Route;
+import org.trektrace.entities.RouteStats;
 
 public class AltitudePlotScreen extends FullScreen {
 	RouteStats stats;

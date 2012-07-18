@@ -8,6 +8,7 @@ import net.rim.device.api.ui.container.MainScreen;
 
 import org.trektrace.RouteListCallback;
 import org.trektrace.dao.RouteDao;
+import org.trektrace.db.DataAccess;
 import org.trektrace.db.DatabaseException;
 import org.trektrace.entities.Route;
 
@@ -30,19 +31,22 @@ public final class TreckTraceScreen extends MainScreen {
 		MenuItem altitudeItem = new MenuItem("Show alitude plot", 0, 1) {
 			public void run() {
 				Route selected = getSelectedRoute();
-				((UiApplication) getApplication()).pushScreen(new AltitudePlotScreen(selected));
+				((UiApplication) getApplication())
+						.pushScreen(new AltitudePlotScreen(selected));
 			}
 		};
 		MenuItem mapItem = new MenuItem("Show on map", 0, 2) {
 			public void run() {
 				Route selected = getSelectedRoute();
-				((UiApplication) getApplication()).pushScreen(new MapScreen(selected));
+				((UiApplication) getApplication()).pushScreen(new MapScreen(
+						selected));
 			}
 		};
 		MenuItem statItem = new MenuItem("Show statistics", 0, 3) {
 			public void run() {
 				Route selected = getSelectedRoute();
-				((UiApplication) getApplication()).pushScreen(new RouteStatsScreen(selected));
+				((UiApplication) getApplication())
+						.pushScreen(new RouteStatsScreen(selected));
 			}
 		};
 		MenuItem renameItem = new MenuItem("Rename route", 0, 10) {
@@ -99,7 +103,8 @@ public final class TreckTraceScreen extends MainScreen {
 	}
 
 	private Route getSelectedRoute() {
-		Route selected = (Route) routeList.getCallback().get(routeList, routeList.getSelectedIndex());
+		Route selected = (Route) routeList.getCallback().get(routeList,
+				routeList.getSelectedIndex());
 		return selected;
 	}
 }

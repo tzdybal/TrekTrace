@@ -7,12 +7,14 @@ import javax.microedition.location.Location;
 import javax.microedition.location.LocationProvider;
 import javax.microedition.location.QualifiedCoordinates;
 
+import org.trektrace.db.DataAccess;
 import org.trektrace.entities.Route;
 import org.trektrace.gps.GPSListener;
 
 import net.rim.device.api.gps.BlackBerryCriteria;
 import net.rim.device.api.gps.BlackBerryLocationProvider;
 import net.rim.device.api.ui.Field;
+import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.Dialog;
@@ -42,6 +44,8 @@ public class HomeScreen extends MainScreen {
 	private ButtonField startTracingButton;
 
 	private ButtonField stopTracingButton;
+	
+	private ButtonField syncButton;
 
 	public HomeScreen() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
@@ -66,6 +70,7 @@ public class HomeScreen extends MainScreen {
 		startTracingButton = new ButtonField("Start tracing");
 		stopTracingButton = new ButtonField("Stop tracing");
 		stopTracingButton.setEnabled(false);
+		syncButton = new ButtonField("Sync db!", Field.FIELD_HCENTER);
 		HorizontalFieldManager hfm = new HorizontalFieldManager(HorizontalFieldManager.FIELD_HCENTER);
 
 		initActions();
@@ -75,6 +80,7 @@ public class HomeScreen extends MainScreen {
 
 		add(hfm);
 		add(routeListButton);
+		add(syncButton);
 
 		startTracingButton.setFocus();
 
@@ -145,6 +151,17 @@ public class HomeScreen extends MainScreen {
 				routeListButton.setFocus();
 				stopTracingButton.setEnabled(false);
 				startTracingButton.setEnabled(true);
+			}
+		});
+		
+		syncButton.setRunnable(new Thread() {
+			public void run() {
+				try {
+					DataAccess.getDataAccess(false).sync();
+					Dialog.inform("Sync completed!");
+				} catch (Exception e) {
+					Dialog.alert(e.getMessage());
+				}
 			}
 		});
 	}
