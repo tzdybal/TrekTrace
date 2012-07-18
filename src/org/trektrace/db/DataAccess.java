@@ -12,7 +12,7 @@ import com.ianywhere.ultralitej12.ULjException;
 public class DataAccess {
 	private static Connection conn;
 	private static DataAccess instance;
-	private static SyncParms syncParms;
+	private static SyncParms syncParams = null;
 
 	public static synchronized DataAccess getDataAccess(boolean reset)
 			throws Exception {
@@ -38,34 +38,30 @@ public class DataAccess {
 		}
 		return instance;
 	}
-	
+
 	public Connection getConnection() {
 		return conn;
 	}
 
 	private void createDatabaseSchema() throws DatabaseException {
 		try {
-			PreparedStatement pointsStmt = conn.prepareStatement(
-					"CREATE TABLE points"
-					+ "("
-					+ "id UNIQUEIDENTIFIER DEFAULT NEWID()"
-					+ ", route_id UNIQUEIDENTIFIER NOT NULL"
-					+ ", altitude DOUBLE NOT NULL"
-					+ ", latitude DOUBLE NOT NULL"
-					+ ", longitude DOUBLE NOT NULL"
-					+ ", time_stmp DATE NOT NULL"
-					+ ", PRIMARY KEY (id)"
-					+ ")");
+			PreparedStatement pointsStmt = conn
+					.prepareStatement("CREATE TABLE points" + "("
+							+ "id UNIQUEIDENTIFIER DEFAULT NEWID()"
+							+ ", route_id UNIQUEIDENTIFIER NOT NULL"
+							+ ", altitude DOUBLE NOT NULL"
+							+ ", latitude DOUBLE NOT NULL"
+							+ ", longitude DOUBLE NOT NULL"
+							+ ", time_stmp DATE NOT NULL"
+							+ ", PRIMARY KEY (id)" + ")");
 
-			PreparedStatement routesStmt = conn.prepareStatement(
-					"CREATE TABLE routes "
-					+ "("
-					+ "id UNIQUEIDENTIFIER DEFAULT NEWID()"
-					+ ", name VARCHAR(256) NOT NULL"
-					+ ", description VARCHAR(256)"
-					+ ", PRIMARY KEY (id)"
-					+ ")");
-		
+			PreparedStatement routesStmt = conn
+					.prepareStatement("CREATE TABLE routes " + "("
+							+ "id UNIQUEIDENTIFIER DEFAULT NEWID()"
+							+ ", name VARCHAR(256) NOT NULL"
+							+ ", description VARCHAR(256)"
+							+ ", PRIMARY KEY (id)" + ")");
+
 			pointsStmt.execute();
 			routesStmt.execute();
 
@@ -77,22 +73,17 @@ public class DataAccess {
 		}
 	}
 
-	public boolean sync() {
-		try {
-			if (syncParms == null) {
-				syncParms = conn.createSyncParms(SyncParms.HTTP_STREAM,
-						"mluser", "HelloBlackBerrySyncModel");
-				syncParms.setPassword("mlpassword");
-				syncParms.getStreamParms().setHost("your-host-name"); // USE
-																		// YOUR
-																		// OWN
-				syncParms.getStreamParms().setPort(8081); // USE YOUR OWN
-			}
-			conn.synchronize(syncParms);
-			return true;
-		} catch (ULjException uex) {
-			Dialog.alert("Exception: " + uex.toString());
-			return false;
+	public boolean sync() throws ULjException {
+		if (syncParams == null) {
+			syncParams = conn.createSyncParms(SyncParms.HTTP_STREAM, "bbuser",
+					"TrekTraceSyncModel");
+			syncParams.setPassword("bbpass");
+			syncParams.getStreamParms().setPort(8081);
+			syncParams.getStreamParms().setHost("172.16.159.130");
+			syncParams.setLivenessTimeout(10);
+			
 		}
+		conn.synchronize(syncParams);
+		return true;
 	}
 }
